@@ -1,5 +1,5 @@
 {
-	"name": "LED",
+	"name": "eBoard",
 	"version": "0.1.0",
 	"private": true,
 	"author": {
@@ -11,7 +11,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
-		"start": "next start",
+		"start": "next start --port 8885",
 		"lint": "next lint"
 	},
 	"dependencies": {
