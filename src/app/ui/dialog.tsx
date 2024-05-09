@@ -13,8 +13,8 @@ export function addLedDialog(addDialog: (dialog: Omit<TLUiDialog, 'id'> & {
     cancel,
     confirm,
     displayDontShowAgain = false,
-    onCancel = () => { },
-    onContinue = () => { },
+    onCancel,
+    onContinue,
 }: {
     title?: string
     body?: string | ReactElement
@@ -32,10 +32,12 @@ export function addLedDialog(addDialog: (dialog: Omit<TLUiDialog, 'id'> & {
                 }}
                 onContinue={() => {
                     if (onContinue) onContinue();
+                    onClose();
                 }} />
         ),
         onClose: () => {
             if (onCancel) onCancel();
+            return void null;
         },
     })
 }

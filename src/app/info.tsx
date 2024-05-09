@@ -1,4 +1,3 @@
-import { describe } from "node:test"
 
 /**
  * 作者信息

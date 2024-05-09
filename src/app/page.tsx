@@ -1,13 +1,14 @@
 'use client'
-import { DefaultColorThemePalette, Tldraw, getUserPreferences, setUserPreferences, useEditor, useUiEvents } from 'tldraw'
-import { LedTLWComponents } from './ui/components'
-import { SneakyFloatyHook } from './ui/tools'
-import ExtIcons from './ui/exticons'
-import { handleTlEvent } from './ui/event'
 import { useEffect } from 'react'
+import { Tldraw, getUserPreferences, setUserPreferences } from 'tldraw'
+import { LedTLWComponents } from './ui/components'
+import { handleTlEvent } from './ui/event'
+import ExtIcons from './ui/exticons'
 import { ledOverrides } from './ui/overrides'
+import { SneakyFloatyHook } from './ui/tools'
 
-const TldrawConfig = {
+
+export const TldrawConfig = {
 	// 刷新后保留
 	persistenceKey: "led_persistence",
 	// 强制移动端模式
@@ -26,6 +27,9 @@ const TldrawConfig = {
 	// isFocusMode:false,
 	assetUrls: {
 		icons: ExtIcons,
+	},
+	fullScreen: {
+		formart: 'svg' as 'svg' | 'png'
 	}
 }
 
@@ -51,8 +55,8 @@ export default function Home() {
 	useEffect(() => {
 		initDefaultPreference();
 		console.log('组件加载完成');
-		return () => {};
-	  }, []); 
+		return () => { };
+	}, []);
 	return (
 		<main>
 			<div style={{ position: 'fixed', inset: 0 }}>
@@ -65,12 +69,12 @@ export default function Home() {
 
 					components={LedTLWComponents}
 					overrides={ledOverrides}
-					onUiEvent={handleTlEvent} 
+					onUiEvent={handleTlEvent}
 				>
 					<SneakyFloatyHook />
-				</Tldraw>
+				</Tldraw>)
+
 			</div>
 		</main>
 	)
 }
-

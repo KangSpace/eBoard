@@ -1,8 +1,9 @@
 `use client`
 import { useEffect, useState } from "react";
-import { TldrawUiMenuItem, Vec, getUserPreferences, setUserPreferences, uniqueId, useContainer, useEditor, useToasts } from "tldraw";
+import { TldrawUiMenuItem, Vec, getUserPreferences, setUserPreferences, uniqueId, useContainer, useDialogs, useEditor, useToasts } from "tldraw";
+import { addLedDialog } from "./dialog";
 
-
+const fullScreenWrapperId = "fullScreenWrapper";
 
 /**
  * QuickAction: 全屏切换按钮菜单
@@ -11,8 +12,11 @@ export function FullScreenToolMenuItem() {
 	const [fullScreenSate, setFullScreen] = useState(document.fullscreenElement ? true : false);
 	let { addToast } = useToasts();
 	function doFullScreen() {
-		let element = document.documentElement;
 		let newScreenSate = !fullScreenSate;
+		// fullScreenHandle(newScreenSate, editor, addDialog);
+		let element = document.documentElement;
+		if (!element) return;
+		
 		if (newScreenSate) {
 			if (element.requestFullscreen) {
 				element.requestFullscreen();
@@ -25,7 +29,7 @@ export function FullScreenToolMenuItem() {
 		setFullScreen(newScreenSate);
 		addToast({
 			id: uniqueId(),
-			title: `已${newScreenSate?'进入':'退出'}全屏`,
+			title: `已${newScreenSate ? '进入' : '退出'}全屏`,
 			severity: 'info'
 		})
 	}
@@ -39,7 +43,6 @@ export function FullScreenToolMenuItem() {
 		/>
 	)
 }
-
 
 /**
  * ActionsMenu: 专注模式菜单
@@ -71,8 +74,15 @@ export function FocusModeToolMenuItem() {
  */
 export function ClearToolMenuItem() {
 	const editor = useEditor();
+	let { addDialog } = useDialogs();
+	let [disabled, setDisabled] = useState(editor.getCurrentPageShapes().length < 1);
 	function clearHandle() {
-		editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
+		addLedDialog(addDialog, {
+			title: "提示", body: "是否清空画板?", cancel: "取消", confirm: "清空", onContinue() {
+				editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
+				setDisabled(!disabled);
+			}
+		});
 	}
 	return (
 		<TldrawUiMenuItem
@@ -80,6 +90,7 @@ export function ClearToolMenuItem() {
 			label="清空"
 			icon='clear'
 			readonlyOk
+			disabled={disabled}
 			onSelect={clearHandle}
 		/>
 	)
