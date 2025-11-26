@@ -7,7 +7,6 @@
 ### 预览
 ![eBoard](/public/assets/screenshots/eBoard_full.png)
 
-访问 [eboard.jigu.pro](https://eboard.jigu.pro) 体验。
 
 
 
